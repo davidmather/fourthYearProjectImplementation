@@ -1,0 +1,9 @@
+[submodule "frontend"]
+	path = frontend
+	url = https://github.com/davidmather/fourthYearProjectFrontend
+[submodule "licode"]
+	path = licode
+	url = https://github.com/davidmather/fourthYearProjectLicode
+[submodule "janus"]
+	path = janus
+	url = https://github.com/davidmather/fourthYearProjectDocker-janus

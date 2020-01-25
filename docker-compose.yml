@@ -1,0 +1,75 @@
+version: '2'
+
+services:
+  janus-gateway:
+    image: qxip/docker-janus
+    container_name: janus-gateway
+    volumes:
+      - ./janus/janus/etc/janus/:/root/janus/etc/janus/
+      - ./janus/janus/janus.log:/var/log/janus.log
+    ports:
+      - "8088:8088"
+      - "8089:8089"
+      - "8188:8188"
+      - "7088:7088"
+      - "7188:7188"
+      - "7889:7889"
+      - "10000-10200:10000-10200"
+    expose:
+      - "8088"
+      - "8089"
+      - "8188"
+      - "7088"
+      - "7188"
+      - "7889"
+      - "10000-10200"
+    networks:
+      - back-tier
+      - front-tier
+
+  apptest:
+    image: "licode-image"
+    container_name: "apptest"
+    working_dir: /opt
+    environment:
+      - NODE_ENV=production
+      - MIN_PORT=30000
+      - MAX_PORT=30050
+      - PUBLIC_IP=192.168.0.10
+      - NETWORK_INTERFACE=eth0
+    volumes:
+      - ./licode/extras/basic_example:/opt/licode/extras/basic_example
+    ports:
+      - "8080:8080"
+      - "3000:3000"
+      - "3001:3001"
+      - "3004:3004"
+      - "30000-30050:30000-30050/udp"
+    expose:
+      - "8080"
+      - "3000"
+      - "3001"
+      - "3004"
+      - "30000-30050"
+
+  frontend:
+    image: "frontend"
+    user: "node"
+    container_name: "frontend"
+    working_dir: /home/node/app
+    environment:
+      - NODE_ENV=production
+    volumes:
+      - ./frontend:/home/node/app
+    ports:
+      - "8443:8443"
+    expose:
+      - "8443"
+    command: "npm start"
+
+networks:
+  front-tier:
+    driver: bridge
+  back-tier:
+    driver: bridge
+
