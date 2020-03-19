@@ -40,32 +40,105 @@ services:
     volumes:
       - ./licode/extras/basic_example:/opt/licode/extras/basic_example
     ports:
-      - "8080:8080"
+      # - "8080:8080"
       - "3000:3000"
       - "3001:3001"
       - "3004:3004"
       - "30000-30050:30000-30050/udp"
     expose:
-      - "8080"
+      # - "8080"
       - "3000"
       - "3001"
       - "3004"
       - "30000-30050"
 
-  frontend:
-    image: "frontend"
+#  frontend:
+#    image: "frontend"
+#    user: "node"
+#    container_name: "frontend"
+#    working_dir: /home/node/app
+#    environment:
+#      - NODE_ENV=production
+#    volumes:
+#      - ./frontend:/home/node/app
+#    ports:
+#      - "8443:8443"
+#    expose:
+#      - "8443"
+#    command: "npm start"
+
+  # The Node.js login api
+  login:
+    image: "node:10"
     user: "node"
-    container_name: "frontend"
+    container_name: login
     working_dir: /home/node/app
     environment:
       - NODE_ENV=production
+      - GRPC_SERVER=grpcaccountsservice:5001
     volumes:
-      - ./frontend:/home/node/app
+      - ./login:/home/node/app
     ports:
-      - "8443:8443"
+      - "16001:16001"
     expose:
-      - "8443"
+      - "16001"
     command: "npm start"
+    depends_on:
+      - dbMysql
+      - grpcaccountsservice
+
+  # GRPC accounts service
+  grpcaccountsservice:
+    image: "node:10"
+    user: "node"
+    container_name: "grpcaccountsservice"
+    hostname: "grpcaccountsservice"
+    working_dir: /home/node/app
+    environment:
+      - NODE_ENV=production
+      - MYSQL_HOST=dbMysql
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=changeme
+      - MYSQL_DATABASE=Microservices3
+    volumes:
+      - ./accountsService:/home/node/app
+    ports:
+      - "5001:5001"
+    expose:
+      - "5001"
+    command: "npm start"
+    depends_on:
+      - dbMysql
+
+  # The mysql database
+  dbMysql:
+    image: mysql:8.0.3
+    restart: always
+    container_name: dbMysql
+    hostname: dbMysql
+    volumes:
+      - ./database/data/mysql/database:/var/lib/mysql
+      - ./database/data/mysql/init:/docker-entrypoint-initdb.d
+    ports:
+      - "3306:3306"
+    expose:
+      - "3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: changeme
+      MYSQL_ROOT_USER: root
+      MYSQL_DATABASE: Microservices3
+      MYSQL_USER: Admin
+      MYSQL_PASSWORD: changeme
+
+  # The mysql database administration dashboard
+  adminer:
+    image: adminer
+    container_name: adminer
+    restart: always
+    ports:
+      - "8080:8080"
+    depends_on:
+      - dbMysql
 
 networks:
   front-tier:

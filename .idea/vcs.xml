@@ -2,9 +2,13 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Images" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/accountsService" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/database" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/fourthYearProjectDocker-janus" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/frontend" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/janus" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/licode" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/login" vcs="Git" />
   </component>
 </project>
