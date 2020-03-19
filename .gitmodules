@@ -19,3 +19,9 @@
 [submodule "AccountsService"]
 	path = AccountsService
 	url = https://github.com/davidmather/fourthYearProjectAccountsService
+[submodule "accountsService"]
+	path = accountsService
+	url = https://github.com/davidmather/fourthYearProjectAccountsService
+[submodule "Images"]
+	path = Images
+	url = https://github.com/davidmather/fourthYearProjectImages
