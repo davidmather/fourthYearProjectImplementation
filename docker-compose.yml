@@ -67,6 +67,14 @@ services:
 #      - "8443"
 #    command: "npm start"
 
+  # Sonarqube code quality service
+#  sonarqube:
+#    container_name: sonarqube
+#    image: sonarqube:latest
+#    ports:
+#      - "9000:9000"
+#      - "9092:9092"
+
   # The Node.js login api
   login:
     image: "node:10"
